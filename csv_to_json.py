@@ -18,7 +18,7 @@ for line in file:
     notas = campos[3]
     if notas == 'notas*\n':
         result = re.sub(r'\(', r'[', camposNotas[3])
-        result = re.sub(r'\)', r'\]', camposNotas[3])
+        result = re.sub(r'\)', r']', result)
         print("notas : " + result)
         print("}")
     elif notas == "notas*sum":
