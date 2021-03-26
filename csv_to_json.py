@@ -1,8 +1,23 @@
 import re
 
+def isListaTruncada(dados):
+    return re.search(r'\*', dados)
+
+def calculaAvg(dados):
+    return
+
+def calculaSum(dados):
+    return
+
+def calculaMax(dados):
+    return
+
+def calculaMin(dados): 
+    return
+
 with open('notas.csv') as line:
     first_line = line.readline()
-    campos = re.split(r";", first_line)
+    campos = re.split(r";", first_line.strip())
 
 file = open('notas.csv')
 next(file)
@@ -11,28 +26,13 @@ print("[")
 
 for line in file:
     print("{")
-    camposNotas = re.split(r";", line)
-    print(campos[0] + ": " + camposNotas[0] + " ,")
-    print(campos[1] + ": " + camposNotas[1] + " ,")
-    print(campos[2] + ": " + camposNotas[2] + " ,")
-    notas = campos[3]
-    if notas == 'notas*\n':
-        result = re.sub(r'\(', r'[', camposNotas[3])
-        result = re.sub(r'\)', r']', result)
-        print("notas : " + result)
-        print("}")
-    elif notas == "notas*sum":
-        print("notas*avg : " + camposNotas[3])
-        print("}")
-    elif notas == "notas*avg":
-        print("notas*avg : " + camposNotas[3])
-        print("}")
-    elif notas == "notas*max":
-        print("notas*avg : " + camposNotas[3])
-        print("}")
-    elif notas == "notas*min":
-        print("notas*avg : " + camposNotas[3])
-        print("}")
-
+    valores = re.split(r";", line.strip())
+    for i in range(len(valores) - 1):
+        if not isListaTruncada(campos[i]):
+            print(campos[i] + ": " + valores[i] + ",")
+    i += 1
+    if not isListaTruncada(campos[i]):
+        print(campos[i] + ": " + valores[i])
+        print("},")
 
 print("]")
