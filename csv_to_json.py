@@ -40,7 +40,7 @@ def conversor(csv, fileOutput, separator, separator_lista):
     fileOutput = open(fileOutput, 'w')
     first_line = file.readline()
     campos = re.split(separator, first_line.strip())
-    
+
     output = ""
     output += "[\n"
 
@@ -54,19 +54,19 @@ def conversor(csv, fileOutput, separator, separator_lista):
                 valor = re.sub(r"\(", r"", valores[i])
                 valor = re.sub(r"\)", r"", valor)
 
-                if campo := re.search(r'avg', campos[i]):
+                if re.search(r'avg', campos[i]):
                     output += calculaAvg(valor, campos[i], separator_lista)
                     output += ",\n"
 
-                elif campo := re.search(r'sum', campos[i]):
+                elif re.search(r'sum', campos[i]):
                     output += calculaSum(valor, campos[i], separator_lista)
                     output += ",\n"
 
-                elif campo := re.search(r'max', campos[i]):
+                elif re.search(r'max', campos[i]):
                     output += calculaMax(valor, campos[i], separator_lista)
                     output += ",\n"
 
-                elif campo := re.search(r'min', campos[i]):
+                elif re.search(r'min', campos[i]):
                     output += calculaMin(valor, campos[i], separator_lista)
                     output += ",\n"
 
@@ -75,11 +75,11 @@ def conversor(csv, fileOutput, separator, separator_lista):
                     campo = re.sub(r'\*', r"", campos[i])
                     output += ("\"" + campo + "\": ") 
                     output += "["
-                    for index in range(len(lista) - 1):
+                    for index in range(len(lista)):
                         output += str(lista[index])
                         output += ","
-                    output += str(lista[index - 1])
                     output += "]"
+                    output = re.sub(r',]', r']', output)
                     output += (",\n")
         output += ("},\n")
 
