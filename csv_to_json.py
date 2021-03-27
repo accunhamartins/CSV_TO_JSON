@@ -35,16 +35,12 @@ def calculaMin(dados, campo, separator_lista):
     campo = re.sub(r'\*', r'_', campo)
     return ("\"" + campo + "\": " + str(minimo))
 
-def conversor(csv, fileOutput, separator, separator_lista):
-    
-    with open(csv) as line:
-        first_line = line.readline()
-        campos = re.split(separator, first_line.strip())
-    
+def conversor(csv, fileOutput, separator, separator_lista): 
     file = open(csv)
     fileOutput = open(fileOutput, 'w')
-    next(file)
-
+    first_line = file.readline()
+    campos = re.split(separator, first_line.strip())
+    
     output = ""
     output += "[\n"
 
@@ -97,10 +93,10 @@ def conversor(csv, fileOutput, separator, separator_lista):
 csv = input('Insira o ficheiro CSV que pretende ler: ')
 json = input('Insira o nome do ficheiro JSON: ')
 separator = input('CSV separado por:\n1) ;\n2) ,\n')
-if separator is "1":
+if separator == "1":
     conversor(csv, json, ";", ",")
     print('Conversão realizada com sucesso!')
-elif separator is "2":
+elif separator == "2":
     conversor(csv, json, ",", ";")
     print('Conversão realizada com sucesso!')
 else :
