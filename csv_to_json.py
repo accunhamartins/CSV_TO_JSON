@@ -35,7 +35,7 @@ def calculaMin(dados, campo):
     campo = re.sub(r'\*', r'_', campo)
     return (campo + ": " + str(minimo))
 
-csv = 'teste.csv'
+csv = 'notas.csv'
 
 with open(csv) as line:
     first_line = line.readline()
@@ -50,7 +50,7 @@ output += "[\n"
 for line in file:
     output += ("{\n")
     valores = re.split(r";", line.strip())
-    for i in range(len(valores) - 1):
+    for i in range(len(valores)):
         if not isListaTruncada(campos[i]):
             output += (campos[i] + ": \"" + valores[i] + "\",\n")
         else:
@@ -84,40 +84,10 @@ for line in file:
              output += str(lista[index - 1])
              output += "]"
              output += (",\n")
-    i += 1
-    if not isListaTruncada(campos[i]):
-        output += (campos[i] + ": \"" + valores[i] + "\"\n")
-
-    else:
-            valor = re.sub(r"\(", r"", valores[i])
-            valor = re.sub(r"\)", r"", valor)
-
-            if campo := re.search(r'avg', campos[i]):
-               output += calculaAvg(valor, campos[i])
-
-            elif campo := re.search(r'sum', campos[i]):
-                output += calculaSum(valor, campos[i])
-
-            elif campo := re.search(r'max', campos[i]):
-                output += calculaMax(valor, campos[i])
-
-            elif campo := re.search(r'min', campos[i]):
-                output += calculaMin(valor, campos[i])
-
-            else:
-             lista = re.split(",", valor)
-             campo = re.sub(r'\*', r"", campos[i])
-             output += (campo + ": ") 
-             output += "["
-             for index in range(len(lista) - 1):
-                output += str(lista[index])
-                output += ","
-             output += str(lista[index - 1])
-             output += "]"
-             output += (",\n")
     output += ("},\n")
 
 output += ("]")
 
+output = re.sub(",\n}", "\n}", output)
 output = re.sub("},\n]", "}\n]", output)
 print(output)
