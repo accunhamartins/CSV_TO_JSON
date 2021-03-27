@@ -9,7 +9,7 @@ def calculaAvg(dados, campo):
         lista[i] = int(lista[i])
     media = sum(lista)/len(lista)
     campo = re.sub(r'\*', r'_', campo)
-    return (campo + ": " + str(media))
+    return ("\"" + campo + "\": " + str(media))
 
 def calculaSum(dados, campo):
     lista = re.split(",", dados)
@@ -17,7 +17,7 @@ def calculaSum(dados, campo):
         lista[i] = int(lista[i])
     soma = sum(lista)
     campo = re.sub(r'\*', r'_', campo)
-    return (campo + ": " + str(soma))
+    return ("\"" + campo + "\": " + str(soma))
 
 def calculaMax(dados, campo):
     lista = re.split(",", dados)
@@ -25,7 +25,7 @@ def calculaMax(dados, campo):
         lista[i] = int(lista[i])
     maximo = max(lista)
     campo = re.sub(r'\*', r'_', campo)
-    return (campo + ": " + str(maximo))
+    return ("\"" + campo + "\": " + str(maximo))
 
 def calculaMin(dados, campo):
     lista = re.split(",", dados)
@@ -33,61 +33,70 @@ def calculaMin(dados, campo):
         lista[i] = int(lista[i])
     minimo = min(lista)
     campo = re.sub(r'\*', r'_', campo)
-    return (campo + ": " + str(minimo))
+    return ("\"" + campo + "\": " + str(minimo))
 
-csv = 'notas.csv'
+def conversor(csv, fileOutput):
 
-with open(csv) as line:
-    first_line = line.readline()
-    campos = re.split(r"[;,]", first_line.strip())
+    with open(csv) as line:
+        first_line = line.readline()
+        campos = re.split(r";", first_line.strip())
     
-file = open(csv)
-next(file)
+    file = open(csv)
+    fileOutput = open(fileOutput, 'w')
+    next(file)
 
-output = ""
-output += "[\n"
+    output = ""
+    output += "[\n"
 
-for line in file:
-    output += ("{\n")
-    valores = re.split(r";", line.strip())
-    for i in range(len(valores)):
-        if not isListaTruncada(campos[i]):
-            output += (campos[i] + ": \"" + valores[i] + "\",\n")
-        else:
-            valor = re.sub(r"\(", r"", valores[i])
-            valor = re.sub(r"\)", r"", valor)
-
-            if campo := re.search(r'avg', campos[i]):
-               output += calculaAvg(valor, campos[i])
-               output += ",\n"
-
-            elif campo := re.search(r'sum', campos[i]):
-                output += calculaSum(valor, campos[i])
-                output += ",\n"
-
-            elif campo := re.search(r'max', campos[i]):
-                output += calculaMax(valor, campos[i])
-                output += ",\n"
-
-            elif campo := re.search(r'min', campos[i]):
-                output += calculaMin(valor, campos[i])
-                output += ",\n"
-
+    for line in file:
+        output += ("{\n")
+        valores = re.split(r";", line.strip())
+        for i in range(len(valores)):
+            if not isListaTruncada(campos[i]):
+                output += ("\"" + campos[i] + "\": \"" + valores[i] + "\",\n")
             else:
-             lista = re.split(",", valor)
-             campo = re.sub(r'\*', r"", campos[i])
-             output += (campo + ": ") 
-             output += "["
-             for index in range(len(lista) - 1):
-                output += str(lista[index])
-                output += ","
-             output += str(lista[index - 1])
-             output += "]"
-             output += (",\n")
-    output += ("},\n")
+                valor = re.sub(r"\(", r"", valores[i])
+                valor = re.sub(r"\)", r"", valor)
 
-output += ("]")
+                if campo := re.search(r'avg', campos[i]):
+                    output += calculaAvg(valor, campos[i])
+                    output += ",\n"
 
-output = re.sub(",\n}", "\n}", output)
-output = re.sub("},\n]", "}\n]", output)
-print(output)
+                elif campo := re.search(r'sum', campos[i]):
+                    output += calculaSum(valor, campos[i])
+                    output += ",\n"
+
+                elif campo := re.search(r'max', campos[i]):
+                    output += calculaMax(valor, campos[i])
+                    output += ",\n"
+
+                elif campo := re.search(r'min', campos[i]):
+                    output += calculaMin(valor, campos[i])
+                    output += ",\n"
+
+                else:
+                    lista = re.split(",", valor)
+                    campo = re.sub(r'\*', r"", campos[i])
+                    output += ("\"" + campo + "\": ") 
+                    output += "["
+                    for index in range(len(lista) - 1):
+                        output += str(lista[index])
+                        output += ","
+                    output += str(lista[index - 1])
+                    output += "]"
+                    output += (",\n")
+        output += ("},\n")
+
+    output += ("]")
+
+    output = re.sub(",\n}", "\n}", output)
+    output = re.sub("},\n]", "}\n]", output)
+    fileOutput.write(output)
+
+
+csv = input('Insira o ficheiro CSV que pretende ler: ')
+json = input('Insira o nome do ficheiro JSON: ')
+
+conversor(csv, json)
+
+print('Conversão realizada com sucesso!')
