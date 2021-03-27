@@ -3,43 +3,43 @@ import re
 def isListaTruncada(dados):
     return re.search(r'\*', dados)
 
-def calculaAvg(dados, campo):
-    lista = re.split(",", dados)
+def calculaAvg(dados, campo, separator_lista):
+    lista = re.split(separator_lista, dados)
     for i in range(len(lista)):
         lista[i] = int(lista[i])
     media = sum(lista)/len(lista)
     campo = re.sub(r'\*', r'_', campo)
     return ("\"" + campo + "\": " + str(media))
 
-def calculaSum(dados, campo):
-    lista = re.split(",", dados)
+def calculaSum(dados, campo, separator_lista):
+    lista = re.split(separator_lista, dados)
     for i in range(len(lista)):
         lista[i] = int(lista[i])
     soma = sum(lista)
     campo = re.sub(r'\*', r'_', campo)
     return ("\"" + campo + "\": " + str(soma))
 
-def calculaMax(dados, campo):
-    lista = re.split(",", dados)
+def calculaMax(dados, campo, separator_lista):
+    lista = re.split(separator_lista, dados)
     for i in range(len(lista)):
         lista[i] = int(lista[i])
     maximo = max(lista)
     campo = re.sub(r'\*', r'_', campo)
     return ("\"" + campo + "\": " + str(maximo))
 
-def calculaMin(dados, campo):
-    lista = re.split(",", dados)
+def calculaMin(dados, campo, separator_lista):
+    lista = re.split(separator_lista, dados)
     for i in range(len(lista)):
         lista[i] = int(lista[i])
     minimo = min(lista)
     campo = re.sub(r'\*', r'_', campo)
     return ("\"" + campo + "\": " + str(minimo))
 
-def conversor(csv, fileOutput):
-
+def conversor(csv, fileOutput, separator, separator_lista):
+    
     with open(csv) as line:
         first_line = line.readline()
-        campos = re.split(r";", first_line.strip())
+        campos = re.split(separator, first_line.strip())
     
     file = open(csv)
     fileOutput = open(fileOutput, 'w')
@@ -50,7 +50,7 @@ def conversor(csv, fileOutput):
 
     for line in file:
         output += ("{\n")
-        valores = re.split(r";", line.strip())
+        valores = re.split(separator, line.strip())
         for i in range(len(valores)):
             if not isListaTruncada(campos[i]):
                 output += ("\"" + campos[i] + "\": \"" + valores[i] + "\",\n")
@@ -59,23 +59,23 @@ def conversor(csv, fileOutput):
                 valor = re.sub(r"\)", r"", valor)
 
                 if campo := re.search(r'avg', campos[i]):
-                    output += calculaAvg(valor, campos[i])
+                    output += calculaAvg(valor, campos[i], separator_lista)
                     output += ",\n"
 
                 elif campo := re.search(r'sum', campos[i]):
-                    output += calculaSum(valor, campos[i])
+                    output += calculaSum(valor, campos[i], separator_lista)
                     output += ",\n"
 
                 elif campo := re.search(r'max', campos[i]):
-                    output += calculaMax(valor, campos[i])
+                    output += calculaMax(valor, campos[i], separator_lista)
                     output += ",\n"
 
                 elif campo := re.search(r'min', campos[i]):
-                    output += calculaMin(valor, campos[i])
+                    output += calculaMin(valor, campos[i], separator_lista)
                     output += ",\n"
 
                 else:
-                    lista = re.split(",", valor)
+                    lista = re.split(separator_lista, valor)
                     campo = re.sub(r'\*', r"", campos[i])
                     output += ("\"" + campo + "\": ") 
                     output += "["
@@ -89,14 +89,19 @@ def conversor(csv, fileOutput):
 
     output += ("]")
 
-    output = re.sub(",\n}", "\n}", output)
-    output = re.sub("},\n]", "}\n]", output)
+    output = re.sub(r",\n}", r"\n}", output)
+    output = re.sub(r"},\n]", r"}\n]", output)
     fileOutput.write(output)
 
 
 csv = input('Insira o ficheiro CSV que pretende ler: ')
 json = input('Insira o nome do ficheiro JSON: ')
-
-conversor(csv, json)
-
-print('Conversão realizada com sucesso!')
+separator = input('CSV separado por:\n1) ;\n2) ,\n')
+if separator is "1":
+    conversor(csv, json, ";", ",")
+    print('Conversão realizada com sucesso!')
+elif separator is "2":
+    conversor(csv, json, ",", ";")
+    print('Conversão realizada com sucesso!')
+else :
+    print("Opção inválida")
