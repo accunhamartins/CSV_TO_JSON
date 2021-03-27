@@ -36,7 +36,7 @@ def calculaMin(dados, campo, separator_lista):
     return ("\"" + campo + "\": " + str(minimo))
 
 def conversor(csv, fileOutput, separator, separator_lista): 
-    file = open(csv)
+    file = open(csv,encoding="utf8")
     fileOutput = open(fileOutput, 'w')
     first_line = file.readline()
     campos = re.split(separator, first_line.strip())
