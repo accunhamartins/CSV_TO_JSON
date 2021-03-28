@@ -47,7 +47,7 @@ def conversor(csv, fileOutput, separator, separator_lista):
     for line in file:
         output += ("{\n")
         valores = re.split(separator, line.strip())
-        for i in range(len(valores)):
+        for i in range(len(campos)):
             if not isListaTruncada(campos[i]):
                 output += ("\"" + campos[i] + "\": \"" + valores[i] + "\",\n")
             else:
