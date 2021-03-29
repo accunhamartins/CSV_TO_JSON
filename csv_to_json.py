@@ -1,7 +1,7 @@
 import re
 
 '''
-    Não percebi bem como é usada esta função
+    Função que, recorrendo ao uso de um search, analisa se o campo é, ou não, uma lista truncada
 '''
 def isListaTruncada(dados):
     return re.search(r'\*', dados)
@@ -21,7 +21,7 @@ em formato de String.
 def calculaAvg(dados, campo, separator_lista):
     lista = re.split(separator_lista, dados)
     for i in range(len(lista)):
-        lista[i] = int(lista[i])
+        lista[i] = float(lista[i])
     media = sum(lista)/len(lista)
     campo = re.sub(r'\*', r'_', campo)
     return ("\"" + campo + "\": " + str(media))
@@ -41,7 +41,7 @@ em formato de String.
 def calculaSum(dados, campo, separator_lista):
     lista = re.split(separator_lista, dados)
     for i in range(len(lista)):
-        lista[i] = int(lista[i])
+        lista[i] = float(lista[i])
     soma = sum(lista)
     campo = re.sub(r'\*', r'_', campo)
     return ("\"" + campo + "\": " + str(soma))
@@ -61,7 +61,7 @@ em formato de String.
 def calculaMax(dados, campo, separator_lista):
     lista = re.split(separator_lista, dados)
     for i in range(len(lista)):
-        lista[i] = int(lista[i])
+        lista[i] = float(lista[i])
     maximo = max(lista)
     campo = re.sub(r'\*', r'_', campo)
     return ("\"" + campo + "\": " + str(maximo))
@@ -81,7 +81,7 @@ em formato de String.
 def calculaMin(dados, campo, separator_lista):
     lista = re.split(separator_lista, dados)
     for i in range(len(lista)):
-        lista[i] = int(lista[i])
+        lista[i] = float(lista[i])
     minimo = min(lista)
     campo = re.sub(r'\*', r'_', campo)
     return ("\"" + campo + "\": " + str(minimo))
