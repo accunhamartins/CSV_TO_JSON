@@ -1,6 +1,12 @@
 import re
 
 '''
+    Função que, recorrendo ao uso de um search, analisa se o campo é, ou não, um número
+'''
+def isNumber(dados):
+    return re.search(r'^[0-9]+(\.[0-9]+)?$', dados)
+
+'''
     Função que, recorrendo ao uso de um search, analisa se o campo é, ou não, uma lista truncada
 '''
 def isListaTruncada(dados):
@@ -112,7 +118,10 @@ def conversor(csv, fileOutput, separator, separator_lista):
         valores = re.split(separator, line.strip())
         for i in range(len(campos)):
             if not isListaTruncada(campos[i]):
-                output += ("\"" + campos[i] + "\": \"" + valores[i] + "\",\n")
+                if isNumber(valores[i]):
+                    output += ("\"" + campos[i] + "\": " + valores[i] + ",\n")
+                else:    
+                    output += ("\"" + campos[i] + "\": \"" + valores[i] + "\",\n")
             else:
                 valor = re.sub(r"\(", r"", valores[i])
                 valor = re.sub(r"\)", r"", valor)
