@@ -1,13 +1,13 @@
 import re
 
 '''
-    Função que, recorrendo ao uso de um search, analisa se o campo é, ou não, um número
+    Função que, recorrendo ao uso de um search, analisa se o campo é, ou não, um número.
 '''
 def isNumber(dados):
     return re.search(r'^[0-9]+(\.[0-9]+)?$', dados)
 
 '''
-    Função que, recorrendo ao uso de um search, analisa se o campo é, ou não, uma lista truncada
+    Função que, recorrendo ao uso de um search, analisa se o campo é, ou não, uma lista truncada.
 '''
 def isListaTruncada(dados):
     return re.search(r'\*', dados)
@@ -67,10 +67,10 @@ espaço no início e fim desta, devido à função pré-definida strip. É separ
 (terceiro input). Esta lista vai ser guardada numa variável campos responsável por indicar a que correspondem os valores que vêm nas linhas seguintes. De seguida
 cada linha do ficheiro é lida individualmente e é feito o seu split pelo separator passado, sendo, também, ignorados quaisquer espaços existentes no início ou fim
 da mesma. Os dados são guardados numa variável valores, que é uma lista de String. Verifica-se se a primeira linha do ficheiro é truncada ou não. Em caso negativo
-a informação é processada e adicionada à variável output para no final ser escrita no ficheiro JSON. Em caso afirmativo são usadas Regex para procurar por listas
-aninhadas no dataset. Quando essas listas são encontradas pelas Regex as respetivas funções definidas por nós são chamadas e a informação é processada tendo em
-conta isso e depois adicionada à variável output. Por fim, de forma a terminar o processo, a informação contida na variável output é escrita no ficheiro JSON
-pretendido. '''
+realiza-se outra verificação para confirmar se existem campos que sejam número e, posto isto, a informação é processada e adicionada à variável output para no final
+ser escrita no ficheiro JSON. Em caso afirmativo são usadas Regex para procurar por listas aninhadas no dataset. Quando essas listas são encontradas pelas Regex
+as respetivas funções definidas por nós são chamadas e a informação é processada tendo em conta isso e depois adicionada à variável output. Por fim, de forma a
+terminar o processo, a informação contida na variável output é escrita no ficheiro JSON pretendido. '''
 def conversor(csv, fileOutput, separator, separator_lista):
     file = open(csv,encoding="utf8")
     fileOutput = open(fileOutput, 'w')
@@ -87,7 +87,7 @@ def conversor(csv, fileOutput, separator, separator_lista):
             if not isListaTruncada(campos[i]):
                 if isNumber(valores[i]):
                     output += ("\"" + campos[i] + "\": " + valores[i] + ",\n")
-                else:    
+                else:
                     output += ("\"" + campos[i] + "\": \"" + valores[i] + "\",\n")
             else:
                 valor = re.sub(r"\(", r"", valores[i])
