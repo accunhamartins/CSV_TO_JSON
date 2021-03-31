@@ -1,10 +1,16 @@
 import re
 
 '''
+    Função que, recorrendo ao uso de um search, analisa se o campo é, ou não, um inteiro.
+'''
+def isInt(dados):
+    return re.search(r'^(-)?[0-9]+$', dados)
+
+'''
     Função que, recorrendo ao uso de um search, analisa se o campo é, ou não, um número.
 '''
 def isNumber(dados):
-    return re.search(r'^[0-9]+(\.[0-9]+)?$', dados)
+    return re.search(r'^(-)?[0-9]+(\.[0-9]+)?$', dados)
 
 '''
     Função que, recorrendo ao uso de um search, analisa se o campo é, ou não, uma lista truncada.
@@ -19,7 +25,10 @@ retornando, por fim, o argumento campo, seguido pela variável calculada "media"
 def calculaAvg(dados, campo, separator_lista):
     lista = re.split(separator_lista, dados)
     for i in range(len(lista)):
-        lista[i] = float(lista[i])
+        if isInt(lista[i]):
+            lista[i] = int(lista[i])
+        else:
+            lista[i] = float(lista[i])
     media = sum(lista)/len(lista)
     campo = re.sub(r'\*', r'_', campo)
     return ("\"" + campo + "\": " + str(media))
@@ -31,7 +40,10 @@ retornando, por fim, o argumento campo, seguido pela variável calculada "soma" 
 def calculaSum(dados, campo, separator_lista):
     lista = re.split(separator_lista, dados)
     for i in range(len(lista)):
-        lista[i] = float(lista[i])
+       if isInt(lista[i]):
+            lista[i] = int(lista[i])
+       else:
+            lista[i] = float(lista[i])
     soma = sum(lista)
     campo = re.sub(r'\*', r'_', campo)
     return ("\"" + campo + "\": " + str(soma))
@@ -43,7 +55,10 @@ retornando, por fim, o argumento campo, seguido pela variável calculada "maximo
 def calculaMax(dados, campo, separator_lista):
     lista = re.split(separator_lista, dados)
     for i in range(len(lista)):
-        lista[i] = float(lista[i])
+        if isInt(lista[i]):
+            lista[i] = int(lista[i])
+        else:
+            lista[i] = float(lista[i])
     maximo = max(lista)
     campo = re.sub(r'\*', r'_', campo)
     return ("\"" + campo + "\": " + str(maximo))
@@ -55,7 +70,10 @@ retornando, por fim, o argumento campo, seguido pela variável calculada "minimo
 def calculaMin(dados, campo, separator_lista):
     lista = re.split(separator_lista, dados)
     for i in range(len(lista)):
-        lista[i] = float(lista[i])
+        if isInt(lista[i]):
+            lista[i] = int(lista[i])
+        else:
+            lista[i] = float(lista[i])
     minimo = min(lista)
     campo = re.sub(r'\*', r'_', campo)
     return ("\"" + campo + "\": " + str(minimo))
