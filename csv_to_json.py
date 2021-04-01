@@ -94,7 +94,6 @@ def conversor(csv, fileOutput, separator, separator_lista):
     fileOutput = open(fileOutput, 'w')
     first_line = file.readline()
     campos = re.split(separator, first_line.strip())
-
     output = ""
     output += "[\n"
 
@@ -111,19 +110,19 @@ def conversor(csv, fileOutput, separator, separator_lista):
                 valor = re.sub(r"\(", r"", valores[i])
                 valor = re.sub(r"\)", r"", valor)
 
-                if re.search(r'avg', campos[i]):
+                if re.search(r'[Aa][Vv][Gg]', campos[i]):
                     output += calculaAvg(valor, campos[i], separator_lista)
                     output += ",\n"
 
-                elif re.search(r'sum', campos[i]):
+                elif re.search(r'[Ss][Uu][Mm]', campos[i]):
                     output += calculaSum(valor, campos[i], separator_lista)
                     output += ",\n"
 
-                elif re.search(r'max', campos[i]):
+                elif re.search(r'[Mm][Aa][Xx]', campos[i]):
                     output += calculaMax(valor, campos[i], separator_lista)
                     output += ",\n"
 
-                elif re.search(r'min', campos[i]):
+                elif re.search(r'[Mm][Ii][Nn]', campos[i]):
                     output += calculaMin(valor, campos[i], separator_lista)
                     output += ",\n"
 
